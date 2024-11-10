@@ -6,7 +6,7 @@ export declare interface IRemoteAddon {
      * 返回一组命令处理程序
      * @returns 返回一组命令处理程序
      */
-    use(): IRemoteCommandHandler[];
+    use(remote: Remote): IRemoteCommandHandler[];
     /**
      * 可选地处理连接打开事件
      * @param arg - 事件的具体信息

@@ -42,7 +42,7 @@ export class Remote {
   addAddon(...addons: IRemoteAddon[]): void {
     for (let addon of addons) {
       this._addons.push(addon)
-      const cmdHandlers = addon.use()
+      const cmdHandlers = addon.use(this)
       for (let handler of cmdHandlers) {
         // 检查并添加命令处理器到映射表中
         if (!this._commandHandleMap.has(handler.for)) this._commandHandleMap.set(handler.for, handler)
