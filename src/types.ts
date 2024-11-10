@@ -49,6 +49,7 @@ export interface IRemoteConnector {
     listener: (arg: IRemoteConnectorEventMap[E]) => void
   ): void
 }
+
 /**
  * 定义一个远程命令接口，用于指定命令的类型
  * @template Type - 命令的类型，默认为字符串
@@ -56,6 +57,14 @@ export interface IRemoteConnector {
 export interface IRemoteCommand<Type extends string = string> {
   // 命令的具体类型
   type: Type
+}
+
+/**
+ * 定义一个可以收到远程命令回复的接口
+ * @template Type - 命令的类型，默认为字符串
+ */
+export interface IRemoteCommandReplyable<Type extends string = string> extends IRemoteCommand<Type> {
+  replyId: string
 }
 
 /**

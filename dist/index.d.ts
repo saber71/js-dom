@@ -46,6 +46,14 @@ export declare interface IRemoteCommandHandler<CmdType extends string = string> 
 }
 
 /**
+ * 定义一个可以收到远程命令回复的接口
+ * @template Type - 命令的类型，默认为字符串
+ */
+export declare interface IRemoteCommandReplyable<Type extends string = string> extends IRemoteCommand<Type> {
+    replyId: string;
+}
+
+/**
  * 定义远程连接器接口，用于与远程服务进行通信
  */
 export declare interface IRemoteConnector {
