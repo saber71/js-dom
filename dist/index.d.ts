@@ -138,6 +138,10 @@ export declare class Remote {
      */
     sendMessage(msg: IRemoteMessage): void;
     /**
+     * 发送错误消息。
+     */
+    sendError(reason: string): void;
+    /**
      * 清理Remote实例，移除所有事件监听器和插件。
      */
     dispose(): void;

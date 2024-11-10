@@ -68,6 +68,16 @@ export class Remote {
   }
 
   /**
+   * 发送错误消息。
+   */
+  sendError(reason: string) {
+    this.sendMessage({
+      subject: "error",
+      data: reason
+    })
+  }
+
+  /**
    * 清理Remote实例，移除所有事件监听器和插件。
    */
   dispose() {
