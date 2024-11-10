@@ -46,6 +46,11 @@
         this.connector.send(JSON.stringify(data));
     }
     /**
+   * 主动发送消息给服务器。
+   */ sendMessage(msg) {
+        this.connector.send(JSON.stringify(msg));
+    }
+    /**
    * 清理Remote实例，移除所有事件监听器和插件。
    */ dispose() {
         // 移除所有事件监听器

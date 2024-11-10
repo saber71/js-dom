@@ -103,6 +103,14 @@ export declare interface IRemoteConnectorEventMap {
 }
 
 /**
+ * 定义一个用于主动发送消息接口，用于描述消息的主题和数据
+ */
+export declare interface IRemoteMessage {
+    subject: string;
+    data: string;
+}
+
+/**
  * Remote 类负责通过一个远程连接器（IRemoteConnector）来处理远程操作网页。
  * 它可以添加插件（IRemoteAddon）来扩展其功能，并通过监听连接器的事件来响应各种情况，
  * 如消息接收、连接打开、关闭和错误。
@@ -125,6 +133,10 @@ export declare class Remote {
      * 回复一个命令。
      */
     reply(data: IRemoteCommandReplay): void;
+    /**
+     * 主动发送消息给服务器。
+     */
+    sendMessage(msg: IRemoteMessage): void;
     /**
      * 清理Remote实例，移除所有事件监听器和插件。
      */

@@ -4,7 +4,8 @@ import type {
   IRemoteConnector,
   IRemoteConnectorEventMap,
   IRemoteAddon,
-  IRemoteCommandReplay
+  IRemoteCommandReplay,
+  IRemoteMessage
 } from "./types.ts"
 
 /**
@@ -57,6 +58,13 @@ export class Remote {
    */
   reply(data: IRemoteCommandReplay) {
     this.connector.send(JSON.stringify(data))
+  }
+
+  /**
+   * 主动发送消息给服务器。
+   */
+  sendMessage(msg: IRemoteMessage) {
+    this.connector.send(JSON.stringify(msg))
   }
 
   /**

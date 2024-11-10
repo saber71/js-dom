@@ -51,6 +51,14 @@ export interface IRemoteConnector {
 }
 
 /**
+ * 定义一个用于主动发送消息接口，用于描述消息的主题和数据
+ */
+export interface IRemoteMessage {
+  subject: string
+  data: string
+}
+
+/**
  * 定义一个远程命令接口，用于指定命令的类型
  * @template Type - 命令的类型，默认为字符串
  */
