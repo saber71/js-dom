@@ -20,9 +20,9 @@ export interface IRemoteConnectorEventMap {
 export interface IRemoteConnector {
   /**
    * 发送数据到远程服务
-   * @param data 要发送的数据，可以是字符串、数组缓冲区视图或数组缓冲区
+   * @param data 要发送的数据
    */
-  send(data: String | ArrayBufferView | ArrayBuffer): void
+  send(data: string): void
 
   /**
    * 关闭与远程服务的连接
@@ -65,6 +65,14 @@ export interface IRemoteCommand<Type extends string = string> {
  */
 export interface IRemoteCommandReplyable<Type extends string = string> extends IRemoteCommand<Type> {
   replyId: string
+}
+
+/**
+ * 定义一个用来回复远程命令的接口
+ */
+export interface IRemoteCommandReplay {
+  replyId: string
+  data: string
 }
 
 /**

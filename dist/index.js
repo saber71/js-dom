@@ -41,6 +41,11 @@
         }
     }
     /**
+   * 回复一个命令。
+   */ reply(data) {
+        this.connector.send(JSON.stringify(data));
+    }
+    /**
    * 清理Remote实例，移除所有事件监听器和插件。
    */ dispose() {
         // 移除所有事件监听器

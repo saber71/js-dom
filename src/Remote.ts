@@ -3,7 +3,8 @@ import type {
   IRemoteCommandHandler,
   IRemoteConnector,
   IRemoteConnectorEventMap,
-  IRemoteAddon
+  IRemoteAddon,
+  IRemoteCommandReplay
 } from "./types.ts"
 
 /**
@@ -49,6 +50,13 @@ export class Remote {
         else throw new Error(`重复注册命令处理器：${handler.for}`)
       }
     }
+  }
+
+  /**
+   * 回复一个命令。
+   */
+  reply(data: IRemoteCommandReplay) {
+    this.connector.send(JSON.stringify(data))
   }
 
   /**
