@@ -11,7 +11,7 @@
     "test": "vitest run"
   },
   "devDependencies": {
-    "@heraclius/external-deps-plugin": "^1.1.0",
+    "@heraclius/external-deps-plugin": "github:saber71/vite-external-deps-plugin",
     "@types/node": "^22.9.0",
     "eventemitter3": "^5.0.1",
     "unplugin-swc": "^1.5.1",
