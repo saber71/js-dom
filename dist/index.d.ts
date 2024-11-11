@@ -1,3 +1,5 @@
+import { default as default_2 } from 'eventemitter3';
+
 /**
  * 定义一个远程插件接口，允许插件向RemoteDom注册命令处理程序，并响应连接器事件
  */
@@ -165,6 +167,14 @@ export declare class Remote {
      * @param arg 事件参数。
      */
     private _handleClose;
+}
+
+export declare class TestRemoteConnector extends default_2 implements IRemoteConnector {
+    addEventListener<E extends keyof IRemoteConnectorEventMap>(type: E, listener: (arg: IRemoteConnectorEventMap[E]) => void): void;
+    close(): void;
+    removeEventListener<E extends keyof IRemoteConnectorEventMap>(type: E, listener: (arg: IRemoteConnectorEventMap[E]) => void): void;
+    send(data: string): void;
+    open(): void;
 }
 
 export { }

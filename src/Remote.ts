@@ -121,9 +121,14 @@ export class Remote {
    */
   private _handleMessage(data: IRemoteConnectorEventMap["message"]) {
     // 解析消息数据并尝试找到相应的命令处理器
-    const obj = JSON.parse(data) as IRemoteCommand
-    if (this._commandHandleMap.has(obj.type)) this._commandHandleMap.get(obj.type)!.handle(obj)
-    else throw new Error(`没有注册的命令处理器：${obj.type}`)
+    const obj = JSON.parse(data)
+    const cmdArray: IRemoteCommand[] = []
+    if (obj instanceof Array) cmdArray.push(...obj)
+    else cmdArray.push(obj)
+    for (let cmd of cmdArray) {
+      if (this._commandHandleMap.has(cmd.type)) this._commandHandleMap.get(cmd.type)!.handle(cmd)
+      else throw new Error(`没有注册的命令处理器：${cmd.type}`)
+    }
   }
 
   /**

@@ -1,3 +1,5 @@
+import EventEmitter from 'eventemitter3';
+
 /**
  * Remote 类负责通过一个远程连接器（IRemoteConnector）来处理远程操作网页。
  * 它可以添加插件（IRemoteAddon）来扩展其功能，并通过监听连接器的事件来响应各种情况，
@@ -96,8 +98,13 @@
    */ _handleMessage(data) {
         // 解析消息数据并尝试找到相应的命令处理器
         const obj = JSON.parse(data);
-        if (this._commandHandleMap.has(obj.type)) this._commandHandleMap.get(obj.type).handle(obj);
-        else throw new Error(`没有注册的命令处理器：${obj.type}`);
+        const cmdArray = [];
+        if (obj instanceof Array) cmdArray.push(...obj);
+        else cmdArray.push(obj);
+        for (let cmd of cmdArray){
+            if (this._commandHandleMap.has(cmd.type)) this._commandHandleMap.get(cmd.type).handle(cmd);
+            else throw new Error(`没有注册的命令处理器：${cmd.type}`);
+        }
     }
     /**
    * 处理连接关闭事件。
@@ -110,4 +117,22 @@
     }
 }
 
-export { Remote };
+class TestRemoteConnector extends EventEmitter {
+    addEventListener(type, listener) {
+        this.on(type, listener);
+    }
+    close() {
+        this.emit("close");
+    }
+    removeEventListener(type, listener) {
+        this.off(type, listener);
+    }
+    send(data) {
+        this.emit("message", data);
+    }
+    open() {
+        this.emit("open");
+    }
+}
+
+export { Remote, TestRemoteConnector };
