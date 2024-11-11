@@ -175,6 +175,7 @@ export declare class TestRemoteConnector extends default_2 implements IRemoteCon
     removeEventListener<E extends keyof IRemoteConnectorEventMap>(type: E, listener: (arg: IRemoteConnectorEventMap[E]) => void): void;
     send(data: string): void;
     open(): void;
+    sendFromClient(data: string): void;
 }
 
 export { }

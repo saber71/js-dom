@@ -128,10 +128,14 @@ class TestRemoteConnector extends EventEmitter {
         this.off(type, listener);
     }
     send(data) {
-        this.emit("message", data);
+        const obj = JSON.parse(data);
+        this.emit(obj.type, obj);
     }
     open() {
         this.emit("open");
+    }
+    sendFromClient(data) {
+        this.emit("message", data);
     }
 }
 
