@@ -22,7 +22,7 @@ export class TestRemoteConnector extends EventEmitter implements IRemoteConnecto
 
   send(data: string): void {
     const obj = JSON.parse(data)
-    this.emit(obj.type, obj)
+    this.emit(obj.subject, obj)
   }
 
   open() {
