@@ -63,6 +63,9 @@ export declare interface IRemoteCommandReplyable<Type extends string = string> e
     replyId: string;
 }
 
+export declare interface IRemoteCommandVisitGlobal extends IRemoteCommandReplyable<"visit-global">, VisitObject {
+}
+
 /**
  * 定义远程连接器接口，用于与远程服务进行通信
  */
@@ -110,6 +113,11 @@ export declare interface IRemoteConnectorEventMap {
 export declare interface IRemoteMessage {
     subject: string;
     data: string;
+}
+
+export declare interface IVisitMethod {
+    name: string;
+    args?: any[];
 }
 
 /**
@@ -177,5 +185,13 @@ export declare class TestRemoteConnector extends default_2 implements IRemoteCon
     open(): void;
     sendFromClient(data: string): void;
 }
+
+export declare class VisitGlobalRemoteAddon implements IRemoteAddon {
+    use(remote: Remote): IRemoteCommandHandler[];
+}
+
+export declare type VisitObject = Array<string | IVisitMethod>;
+
+export declare function visitObject(obj: any, args: VisitObject): any;
 
 export { }

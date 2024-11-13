@@ -1,5 +1,31 @@
 import EventEmitter from 'eventemitter3';
 
+// 辅助函数，用于通过访问路径访问对象
+function visitObject(obj, args) {
+    let value = obj;
+    for (let arg of args){
+        if (typeof arg === "string") value = value[arg];
+        else value = value[arg.name].call(value, ...arg.args || []);
+    }
+    return value ?? "";
+}
+// 访问全局对象的插件
+class VisitGlobalRemoteAddon {
+    use(remote) {
+        return [
+            {
+                for: "visit-global",
+                handle (cmd) {
+                    const result = visitObject(globalThis, cmd);
+                    remote.reply({
+                        replyId: cmd.replyId,
+                        data: typeof result === "object" ? JSON.stringify(result) : "" + result
+                    });
+                }
+            }
+        ];
+    }
+}
 /**
  * Remote 类负责通过一个远程连接器（IRemoteConnector）来处理远程操作网页。
  * 它可以添加插件（IRemoteAddon）来扩展其功能，并通过监听连接器的事件来响应各种情况，
@@ -27,6 +53,8 @@ import EventEmitter from 'eventemitter3';
         connector.addEventListener("open", this._handleOpen);
         connector.addEventListener("close", this._handleClose);
         connector.addEventListener("error", this._handleError);
+        // 添加一个默认插件，用于处理访问全局对象的命令
+        this.addAddon(new VisitGlobalRemoteAddon());
     }
     /**
    * 添加一个或多个插件到Remote实例中。
@@ -139,4 +167,4 @@ class TestRemoteConnector extends EventEmitter {
     }
 }
 
-export { Remote, TestRemoteConnector };
+export { Remote, TestRemoteConnector, VisitGlobalRemoteAddon, visitObject };
