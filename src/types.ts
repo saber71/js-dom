@@ -1,5 +1,14 @@
 import type { Remote } from "./Remote.ts"
 
+// 访问对象的方法
+export interface IVisitMethod {
+  name: string
+  args?: any[]
+}
+
+// 访问对象的属性或方法
+export type VisitObject = Array<string | IVisitMethod>
+
 /**
  * 定义远程连接器的事件映射，用于描述支持的事件类型及其对应的事件数据
  */

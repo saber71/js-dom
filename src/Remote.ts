@@ -5,8 +5,41 @@ import type {
   IRemoteConnectorEventMap,
   IRemoteAddon,
   IRemoteCommandReplay,
-  IRemoteMessage
+  IRemoteMessage,
+  VisitObject,
+  IRemoteCommandReplyable
 } from "./types.ts"
+
+// 辅助函数，用于通过访问路径访问对象
+export function visitObject(obj: any, args: VisitObject): any {
+  let value = obj
+  for (let arg of args) {
+    if (typeof arg === "string") value = value[arg]
+    else value = value[arg.name].call(value, ...(arg.args || []))
+  }
+  return value ?? ""
+}
+
+// 访问全局对象的命令
+export interface IRemoteCommandVisitGlobal extends IRemoteCommandReplyable<"visit-global">, VisitObject {}
+
+// 访问全局对象的插件
+export class VisitGlobalRemoteAddon implements IRemoteAddon {
+  use(remote: Remote): IRemoteCommandHandler[] {
+    return [
+      {
+        for: "visit-global",
+        handle(cmd: IRemoteCommandVisitGlobal) {
+          const result = visitObject(globalThis, cmd)
+          remote.reply({
+            replyId: cmd.replyId,
+            data: typeof result === "object" ? JSON.stringify(result) : "" + result
+          })
+        }
+      }
+    ]
+  }
+}
 
 /**
  * Remote 类负责通过一个远程连接器（IRemoteConnector）来处理远程操作网页。
@@ -35,6 +68,9 @@ export class Remote {
     connector.addEventListener("open", this._handleOpen)
     connector.addEventListener("close", this._handleClose)
     connector.addEventListener("error", this._handleError)
+
+    // 添加一个默认插件，用于处理访问全局对象的命令
+    this.addAddon(new VisitGlobalRemoteAddon())
   }
 
   /**
